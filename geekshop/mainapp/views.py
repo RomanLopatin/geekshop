@@ -41,7 +41,7 @@ def products_office(request):
         'title': 'каталог',
         'links_menu': links_menu
     }
-    return render(request, "mainapp/products_.html", context)
+    return render(request, "mainapp/products.html", context)
 
 
 def products_modern(request):
