@@ -2,12 +2,17 @@ import json
 
 from django.shortcuts import render
 
-
 # Create your views here.
+from mainapp import models
+from mainapp.models import Product
 
 
 def index(request):
-    context = {'title': 'магазин'}
+    product_list = Product.objects.all()[:4]
+    context = {
+        'title': 'магазин',
+        'products': product_list
+    }
     return render(request, "mainapp/index.html", context)
 
 
