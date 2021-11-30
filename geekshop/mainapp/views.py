@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from mainapp import models
-from mainapp.models import Product
+from mainapp.models import Product, ProductCategotry
 
 
 def index(request):
@@ -17,12 +17,13 @@ def index(request):
 
 
 links_menu = [
-    {'href': "products", 'name': 'все'},
-    {'href': "products_home", 'name': 'дом'},
-    {'href': "products_office", 'name': 'офис'},
-    {'href': "products_modern", 'name': 'модерн'},
-    {'href': "products_classic", 'name': 'классика'}
+
+    # {'href': "products_home", 'name': 'дом'},
+    # {'href': "products_office", 'name': 'офис'},
+    # {'href': "products_modern", 'name': 'модерн'},
+    # {'href': "products_classic", 'name': 'классика'}
 ]
+links_menu = ProductCategotry.objects.all()[:5]
 
 
 def products(request):
