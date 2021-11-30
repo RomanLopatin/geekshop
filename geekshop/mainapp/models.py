@@ -7,7 +7,7 @@ from django.db import models
 class ProductCategotry(models.Model):
     name = models.CharField(max_length=64, unique=True, verbose_name='Имя')
     description = models.TextField(verbose_name='Описание', blank=True)
-    href = models.CharField(max_length=64, unique=True, verbose_name='Ссылка', blank=True)
+    link_name = models.CharField(max_length=64, unique=False, verbose_name='Ссылка', blank=True)
 
     def __str__(self):
         return self.name
