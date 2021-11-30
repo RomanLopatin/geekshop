@@ -16,18 +16,8 @@ def index(request):
     return render(request, "mainapp/index.html", context)
 
 
-# links_menu = [
-#     # {'link_name': "", 'name': 'все'},
-#     {'link_name': "home", 'name': 'дом'},
-#     {'link_name': "office", 'name': 'офис'},
-#     {'link_name': "modern", 'name': 'модерн'},
-#     {'link_name': "classic", 'name': 'классика'}
-# ]
-
-links_menu = ProductCategotry.objects.all()[:3]
-
-
-def products(request, name=None):
+def products(request, pk=None):
+    links_menu = ProductCategotry.objects.all()
     # if name is not None:
     #     pass
 
