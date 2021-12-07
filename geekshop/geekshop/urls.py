@@ -19,17 +19,17 @@ from django.contrib import admin
 from django.urls import path, include
 
 import mainapp.views as mainapp
-# from mainapp.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', mainapp.index, name="index"),
 
     path('products/', include('mainapp.urls', namespace="products")),
+    path('auth/', include('authapp.urls', namespace="authapp")),
 
     path('contact/', mainapp.contact, name="contact"),
     path('context/', mainapp.context),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
