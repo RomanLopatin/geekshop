@@ -28,16 +28,17 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+
 def edit(request):
     if request.method == 'POST':
-        edit_form = ShopUserRegisterForm(request.POST, request.FILES)
+        edit_form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
 
         if edit_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('authapp:edit'))
 
     else:
-        edit_form = ShopUserEditForm()
+        edit_form = ShopUserEditForm(instance=request.user)
 
     content = {'edit_form': edit_form}
 
