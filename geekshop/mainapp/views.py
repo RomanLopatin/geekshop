@@ -1,8 +1,9 @@
 import json
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
+from basketapp.models import Basket
 from mainapp import models
 from mainapp.models import Product, ProductCategotry
 
@@ -18,46 +19,39 @@ def index(request):
 
 def products(request, pk=None):
     links_menu = ProductCategotry.objects.all()
-    # if name is not None:
-    #     pass
+    title = 'продукты'
 
-    context = {
-        'title': 'каталог',
-        'links_menu': links_menu
+    if pk is not None:
+        if pk == 0:
+            product_list = Product.objects.all()
+            category_item = {'name': 'все'}
+        else:
+            category_item = get_object_or_404(ProductCategotry, pk=pk)
+            product_list = Product.objects.filter(category__pk=pk)
+
+        content = {
+            'title': title,
+            'links_menu': links_menu,
+            'products': product_list,
+            'category': category_item,
+            'basket': Basket.objects.filter(user=request.user)
+        }
+        return render(request, 'mainapp/products_list.html', content)
+
+    # same_products = Product.objects.all()[1:3]
+    basket = []
+    if request.user.is_authenticated:
+        basket = Basket.objects.filter(user=request.user)
+
+    content = {
+        'title': title,
+        'links_menu': links_menu,
+        'hot_product': Product.objects.all().first,
+        'same_products': Product.objects.all()[1:3],
+        'basket': basket
     }
-    return render(request, "mainapp/products.html", context)
 
-
-# def products_home(request):
-#     context = {
-#         'title': 'каталог',
-#         'links_menu': links_menu
-#     }
-#     return render(request, "mainapp/products.html", context)
-#
-#
-# def products_office(request):
-#     context = {
-#         'title': 'каталог',
-#         'links_menu': links_menu
-#     }
-#     return render(request, "mainapp/products.html", context)
-#
-#
-# def products_modern(request):
-#     context = {
-#         'title': 'каталог',
-#         'links_menu': links_menu
-#     }
-#     return render(request, "mainapp/products.html", context)
-#
-#
-# def products_classic(request):
-#     context = {
-#         'title': 'каталог',
-#         'links_menu': links_menu
-#     }
-#     return render(request, "mainapp/products.html", context)
+    return render(request, 'mainapp/products.html', content)
 
 
 def contact(request):

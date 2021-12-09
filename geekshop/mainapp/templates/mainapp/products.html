@@ -1,10 +1,10 @@
 {% extends 'mainapp/base.html' %}
 {% load static %}
-{
+
 {% block menu %}
 <div class="hero-white">
     <div class="header clearfix">
-        {% include 'mainapp/includes/inc_main_menu_static.html' %}
+        {% include 'mainapp/includes/inc_main_menu.html' %}
     </div>
 </div>
 {% endblock menu %}
@@ -12,7 +12,7 @@
 {% block content%}
 <div class="details">
     <div class="links clearfix">
-        {% include 'mainapp/includes/inc_catigories_menu.html' %}
+        {% include 'mainapp/includes/inc_categories_menu.html' %}
     </div>
 
     <div class="details-products">
