@@ -1,4 +1,5 @@
 import json
+import random
 
 from django.shortcuts import render, get_object_or_404
 
@@ -8,11 +9,28 @@ from mainapp import models
 from mainapp.models import Product, ProductCategotry
 
 
+def get_basket(user):
+    if user.is_authenticated:
+        return Basket.objects.filter(user=user)
+    return []
+
+
+def get_hot_product():
+    products_list = Product.objects.all()
+    return random.sample(list(products_list), 1)[0]
+
+
+def get_same_products(hot_product):
+    same_products_list = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)
+    return same_products_list[:3]
+
+
 def index(request):
     product_list = Product.objects.all()[:4]
     context = {
         'title': 'магазин',
-        'products': product_list
+        'products': product_list,
+        'basket': Basket.objects.filter(user=request.user)
     }
     return render(request, "mainapp/index.html", context)
 
@@ -34,21 +52,21 @@ def products(request, pk=None):
             'links_menu': links_menu,
             'products': product_list,
             'category': category_item,
-            'basket': Basket.objects.filter(user=request.user)
+            'basket': get_basket(request.user)
         }
         return render(request, 'mainapp/products_list.html', content)
 
     # same_products = Product.objects.all()[1:3]
-    basket = []
-    if request.user.is_authenticated:
-        basket = Basket.objects.filter(user=request.user)
-
+    # basket = []
+    # if request.user.is_authenticated:
+    #     basket = Basket.objects.filter(user=request.user)
+    hot_product = get_hot_product()
     content = {
         'title': title,
         'links_menu': links_menu,
-        'hot_product': Product.objects.all().first,
-        'same_products': Product.objects.all()[1:3],
-        'basket': basket
+        'hot_product': hot_product,
+        'same_products': get_same_products(hot_product),
+        'basket': get_basket(request.user)
     }
 
     return render(request, 'mainapp/products.html', content)
@@ -60,7 +78,8 @@ def contact(request):
 
     context = {
         'title': 'Контакты',
-        'addresses': adresses
+        'addresses': adresses,
+        'basket': Basket.objects.filter(user=request.user)
     }
     return render(request, "mainapp/contact.html", context)
 
