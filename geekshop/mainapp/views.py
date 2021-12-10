@@ -26,11 +26,15 @@ def get_same_products(hot_product):
 
 
 def index(request):
+    basket = []
+    if request.user.is_authenticated:
+        basket = Basket.objects.filter(user=request.user)
+
     product_list = Product.objects.all()[:4]
     context = {
         'title': 'магазин',
         'products': product_list,
-        'basket': Basket.objects.filter(user=request.user)
+        'basket': basket
     }
     return render(request, "mainapp/index.html", context)
 
@@ -47,12 +51,16 @@ def products(request, pk=None):
             category_item = get_object_or_404(ProductCategotry, pk=pk)
             product_list = Product.objects.filter(category__pk=pk)
 
+        basket = []
+        if request.user.is_authenticated:
+            basket = get_basket(request.user)
+
         content = {
             'title': title,
             'links_menu': links_menu,
             'products': product_list,
             'category': category_item,
-            'basket': get_basket(request.user)
+            'basket': basket
         }
         return render(request, 'mainapp/products_list.html', content)
 
@@ -61,12 +69,16 @@ def products(request, pk=None):
     # if request.user.is_authenticated:
     #     basket = Basket.objects.filter(user=request.user)
     hot_product = get_hot_product()
+    basket = []
+    if request.user.is_authenticated:
+        basket = get_basket(request.user)
+
     content = {
         'title': title,
         'links_menu': links_menu,
         'hot_product': hot_product,
         'same_products': get_same_products(hot_product),
-        'basket': get_basket(request.user)
+        'basket': basket
     }
 
     return render(request, 'mainapp/products.html', content)
@@ -75,11 +87,14 @@ def products(request, pk=None):
 def contact(request):
     with open("json/contact_info.json") as read_f:
         adresses = json.load(read_f)
+    basket = []
+    if request.user.is_authenticated:
+        basket = Basket.objects.filter(user=request.user)
 
     context = {
         'title': 'Контакты',
         'addresses': adresses,
-        'basket': Basket.objects.filter(user=request.user)
+        'basket': basket
     }
     return render(request, "mainapp/contact.html", context)
 
@@ -95,3 +110,19 @@ def context(request):
         'products': [{'name': 'one', 'price': 1}, {'name': 'two', 'price': 10}, {'name': 'three', 'price': 15}]
     }
     return render(request, "mainapp/test_context.html", context)
+
+
+def product(request, pk):
+    title = 'продукты'
+    basket = []
+    if request.user.is_authenticated:
+        basket = get_basket(request.user)
+
+    content = {
+        'title': title,
+        'links_menu': ProductCategotry.objects.all(),
+        'product': get_object_or_404(Product, pk=pk),
+        'basket': basket,
+    }
+
+    return render(request, 'mainapp/product.html', content)
