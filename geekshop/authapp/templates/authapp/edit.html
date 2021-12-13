@@ -8,11 +8,9 @@
     {{ edit_form.as_p }}
     <br>
     <input class="form-control" type="submit" value="Сохранить">
-    <a class="btn btn-primary fint-control" href="{% url 'index' %}"> На главную </a>
+    <a class="btn btn-primary font-control" href="{% url 'index' %}"> На главную </a>
 </form>
-<div class="user_avatar">
-    <img src="/media/{{user.avatar}}">
-</div>
+<!--<div class="user_avatar"> <img src="/media/{{user.avatar}}"></div>-->
 {% endblock content %}
 
 

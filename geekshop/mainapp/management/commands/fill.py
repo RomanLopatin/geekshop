@@ -31,12 +31,6 @@ class Command(BaseCommand):
             product['category'] = _category
             Product.objects.create(**product)
 
-        shop_admin = ShopUser.objects.create_superuser(
-            username='django',
-            email='admin@gb.local',
-            password='geekbrains'
-        )
-
         super_user = ShopUser.objects.create_superuser(
             'django',
             'django@geekshop.local',
