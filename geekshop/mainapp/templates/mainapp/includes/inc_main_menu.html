@@ -8,11 +8,14 @@
     </li>
 
     {% if user.is_authenticated %}
-    <li><a href="{% url 'authapp:edit' %}">{{ user.first_name|default:'Пользователь' }}</a></li>
-    <li><a href="{% url 'authapp:logout' %}">выйти</a></li>
+        {% if user.is_superuser%}
+        <li><a href="{% url 'adminapp:users' %}">Админка</a></li>
+        {% endif %}
+        <li><a href="{% url 'authapp:edit' %}">{{ user.first_name|default:'Пользователь' }}</a></li>
+        <li><a href="{% url 'authapp:logout' %}">выйти</a></li>
     {% else %}
-    <li><a href="{% url 'authapp:register' %}">Регистрация</a></li>
-    <li><a href="{% url 'authapp:login' %}">Войти</a></li>
+        <li><a href="{% url 'authapp:register' %}">Регистрация</a></li>
+        <li><a href="{% url 'authapp:login' %}">Войти</a></li>
     {% endif %}
 
 </ul>

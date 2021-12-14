@@ -21,12 +21,13 @@ from django.urls import path, include
 import mainapp.views as mainapp
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('', mainapp.index, name="index"),
 
     path('products/', include('mainapp.urls', namespace="products")),
     path('auth/', include('authapp.urls', namespace="authapp")),
     path('basket/', include('basketapp.urls', namespace="basket")),
+    path('admin/', include('adminapp.urls', namespace="admin")),
 
     path('contact/', mainapp.contact, name="contact"),
     path('context/', mainapp.context),
