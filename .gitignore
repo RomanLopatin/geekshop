@@ -2,4 +2,3 @@
 /venv/
 /authapp/__pycache__
 /mainapp/__pycache__
-/geekshop/db.sqlite3
