@@ -132,24 +132,26 @@ def category_delete(request, pk):
 
 
 def products(request, pk):
+    category_item = get_object_or_404(ProductCategotry, pk=pk)
     context = {
+        'category': category_item,
         'object_list': Product.objects.filter(category__pk=pk)
     }
     return render(request, 'adminapp/product_list.html', context)
 
 
-def product_create(request):
+def product_create(request, pk):
+    category_item = get_object_or_404(ProductCategotry, pk=pk)
     title = 'Создание продукта'
 
     if request.method == 'POST':
-        product_form = ProductEditForm(request.POST)
+        product_form = ProductEditForm(request.POST, request.FILES)
         if product_form.is_valid():
             product_form.save()
-            return HttpResponseRedirect(reverse('adminapp:products'))
+            return HttpResponseRedirect(reverse('adminapp:products', args=[pk]))
     else:
-        product_form = ProductEditForm()
-
-    content = {'title': title, 'product_form': product_form}
+        product_form = ProductEditForm({'category': category_item})
+    content = {'title': title, 'edit_form': product_form, 'category': category_item}
 
     return render(request, 'adminapp/product_update.html', content)
 

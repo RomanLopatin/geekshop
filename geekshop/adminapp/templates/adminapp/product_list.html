@@ -4,7 +4,7 @@
 {% block content %}
   <div class="products_list">
     <button class="btn btn-info new_product">
-      <a href="{% url 'adminapp:product_create' %}">
+      <a href="{% url 'adminapp:product_create' category.pk %}">
         новый продукт
       </a>
     </button>
