@@ -1,6 +1,7 @@
 import json
 import random
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -39,26 +40,33 @@ def index(request):
     return render(request, "mainapp/index.html", context)
 
 
-def products(request, pk=None):
-    links_menu = ProductCategotry.objects.all()
+def products(request, pk=None, page=1):
+    links_menu = ProductCategotry.objects.filter(is_active=True)
     title = 'продукты'
+    basket = []
+    if request.user.is_authenticated:
+        basket = get_basket(request.user)
 
     if pk is not None:
         if pk == 0:
-            product_list = Product.objects.all()
+            product_list = Product.objects.filter(is_active=True, category__is_active=True)
             category_item = {'name': 'все'}
         else:
             category_item = get_object_or_404(ProductCategotry, pk=pk)
-            product_list = Product.objects.filter(category__pk=pk)
+            product_list = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True)
 
-        basket = []
-        if request.user.is_authenticated:
-            basket = get_basket(request.user)
+        paginator = Paginator(product_list, 2)
+        try:
+            products_paginator = paginator.page(page)
+        except PageNotAnInteger:
+            products_paginator = paginator.page(1)
+        except EmptyPage:
+            products_paginator = paginator.page(paginator.num_pages)
 
         content = {
             'title': title,
             'links_menu': links_menu,
-            'products': product_list,
+            'products': products_paginator,
             'category': category_item,
             'basket': basket
         }
@@ -69,9 +77,6 @@ def products(request, pk=None):
     # if request.user.is_authenticated:
     #     basket = Basket.objects.filter(user=request.user)
     hot_product = get_hot_product()
-    basket = []
-    if request.user.is_authenticated:
-        basket = get_basket(request.user)
 
     content = {
         'title': title,
@@ -120,7 +125,7 @@ def product(request, pk):
 
     content = {
         'title': title,
-        'links_menu': ProductCategotry.objects.all(),
+        'links_menu': ProductCategotry.objects.filter(is_active=True),
         'product': get_object_or_404(Product, pk=pk),
         'basket': basket,
     }
