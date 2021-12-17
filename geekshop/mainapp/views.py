@@ -50,7 +50,7 @@ def products(request, pk=None, page=1):
     if pk is not None:
         if pk == 0:
             product_list = Product.objects.filter(is_active=True, category__is_active=True)
-            category_item = {'name': 'все'}
+            category_item = {'name': 'все', 'pk': 0}
         else:
             category_item = get_object_or_404(ProductCategotry, pk=pk)
             product_list = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True)
