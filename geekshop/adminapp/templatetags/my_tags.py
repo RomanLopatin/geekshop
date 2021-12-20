@@ -12,7 +12,7 @@ def media_for_users(avatar):
     return f'{settings.MEDIA_URL}{avatar}'
 
 
-@register.filter(name='media_for_products')
+# @register.filter(name='media_for_products')
 def media_for_products(product):
     if not product:
         product = 'products_images/product-1.jpg'
@@ -20,5 +20,5 @@ def media_for_products(product):
     return f'{settings.MEDIA_URL}{product}'
 
 
-# register.filter('media_for_products', media_for_products)  # второй способ регистрации фильтра
+register.filter('media_for_products', media_for_products)  # второй способ регистрации фильтра
 # register.filter('media_folder_products', media_folder_products)
