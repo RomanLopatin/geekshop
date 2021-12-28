@@ -72,14 +72,15 @@ def register(request):
 def verify(request, email, activation_key):
     # try:
     user = ShopUser.objects.get(email=email)
-    if user.activation_key == activation_key and not user.is_activation_key_expired():
-        user.is_active = True
-        user.save()
-        auth.login(request, user)
-        return render(request, 'authapp/verify.html')
-    else:
-        print(f'error activation user: {user}')
-        return render(request, 'authapp/verify.html')
+    if user:
+        if user.activation_key == activation_key and not user.is_activation_key_expired():
+            user.is_active = True
+            user.activation_key = None
+            user.save()
+            auth.login(request, user)
+        # else:
+        #     print(f'error activation user: {user}')
+    return render(request, 'authapp/verify.html')
 
 
 # except Exception as e:
