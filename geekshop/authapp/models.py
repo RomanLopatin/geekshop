@@ -17,6 +17,6 @@ class ShopUser(AbstractUser):
     activation_key_created = models.DateTimeField(blank=True, null=True)
 
     def is_activation_key_expired(self):
-        # if datetime.now() <= self.activation_key_created + timedelta(hours=48):
-        #     return False
+        if datetime.now() <= self.activation_key_created + timedelta(hours=48):
+            return False
         return False
