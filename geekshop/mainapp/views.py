@@ -5,15 +5,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
-from basketapp.models import Basket
 from mainapp import models
 from mainapp.models import Product, ProductCategotry
-
-
-def get_basket(user):
-    if user.is_authenticated:
-        return Basket.objects.filter(user=user)
-    return []
 
 
 def get_hot_product():
@@ -27,15 +20,10 @@ def get_same_products(hot_product):
 
 
 def index(request):
-    basket = []
-    if request.user.is_authenticated:
-        basket = Basket.objects.filter(user=request.user)
-
     product_list = Product.objects.all()[:4]
     context = {
         'title': 'магазин',
         'products': product_list,
-        'basket': basket
     }
     return render(request, "mainapp/index.html", context)
 
@@ -43,9 +31,6 @@ def index(request):
 def products(request, pk=None, page=1):
     links_menu = ProductCategotry.objects.filter(is_active=True)
     title = 'продукты'
-    basket = []
-    if request.user.is_authenticated:
-        basket = get_basket(request.user)
 
     if pk is not None:
         if pk == 0:
@@ -68,14 +53,9 @@ def products(request, pk=None, page=1):
             'links_menu': links_menu,
             'products': products_paginator,
             'category': category_item,
-            'basket': basket
         }
         return render(request, 'mainapp/products_list.html', content)
 
-    # same_products = Product.objects.all()[1:3]
-    # basket = []
-    # if request.user.is_authenticated:
-    #     basket = Basket.objects.filter(user=request.user)
     hot_product = get_hot_product()
 
     content = {
@@ -83,7 +63,6 @@ def products(request, pk=None, page=1):
         'links_menu': links_menu,
         'hot_product': hot_product,
         'same_products': get_same_products(hot_product),
-        'basket': basket
     }
 
     return render(request, 'mainapp/products.html', content)
@@ -92,14 +71,10 @@ def products(request, pk=None, page=1):
 def contact(request):
     with open("json/contact_info.json") as read_f:
         adresses = json.load(read_f)
-    basket = []
-    if request.user.is_authenticated:
-        basket = Basket.objects.filter(user=request.user)
 
     context = {
         'title': 'Контакты',
         'addresses': adresses,
-        'basket': basket
     }
     return render(request, "mainapp/contact.html", context)
 
@@ -119,15 +94,11 @@ def context(request):
 
 def product(request, pk):
     title = 'продукты'
-    basket = []
-    if request.user.is_authenticated:
-        basket = get_basket(request.user)
 
     content = {
         'title': title,
         'links_menu': ProductCategotry.objects.filter(is_active=True),
         'product': get_object_or_404(Product, pk=pk),
-        'basket': basket,
     }
 
     return render(request, 'mainapp/product.html', content)
