@@ -69,10 +69,10 @@ def user_delete(request, pk):
     user = get_object_or_404(ShopUser, pk=pk)
 
     if request.method == 'POST':
-        # user.delete()
+        user.delete()
         # вместо удаления лучше сделаем неактивным
-        user.is_active = False
-        user.save()
+        # user.is_active = False
+        # user.save()
         return HttpResponseRedirect(reverse('adminapp:users'))
 
     content = {'title': title, 'user_to_delete': user}
