@@ -1,0 +1,24 @@
+Content-Type: multipart/alternative;
+ boundary="===============0036599128524622398=="
+MIME-Version: 1.0
+Subject: django111
+From: django@geekshop.local
+To: romanlopatin@gmail.com111
+Date: Tue, 28 Dec 2021 18:58:32 -0000
+Message-ID: <164071791206.16580.7279595759388807702@DESKTOP-US1R5SB>
+
+--===============0036599128524622398==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+http://localhost:8000/auth/verify/romanlopatin@gmail.com111/431209ba770fe6c62ca272ac7911f67d441b7e19
+--===============0036599128524622398==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+http://localhost:8000/auth/verify/romanlopatin@gmail.com111/431209ba770fe6c62ca272ac7911f67d441b7e19
+--===============0036599128524622398==--
+
+-------------------------------------------------------------------------------
